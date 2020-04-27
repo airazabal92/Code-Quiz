@@ -37,6 +37,10 @@ button.addEventListener("click", function(){
     // Remove first page content once button is clicked
     startContent.remove();
 
+    // Display questions on quiz
+    displayQuestions();
+    
+
 });
 
 // Countdown 
@@ -50,4 +54,96 @@ function startCountdown(){
         clearInterval(countdownTimer);
         }
     }, 1000);
+}
+
+// Display questions and keep track of which are correct/wrong 
+
+function displayQuestions(){
+
+    createHTMLSkeleton();
+
+    // Boolean to keep track of whether or not question has been answered
+    var questionAnswered = false;
+
+    // Target div that will contain question
+    var questionEL = document.getElementById("newColumnDivForQuestion");
+
+    // Create new paragraph with quiz question
+    var newQuizQuestion = document.createElement("p");
+
+    // Add attributes to paragraph with question
+    newQuizQuestion.style.fontSize = "25px"; 
+
+    // Add question to element
+    newQuizQuestion.textContent = questions[0].questText;
+
+    // Add new paragraph to HTML
+    questionEL.appendChild(newQuizQuestion);
+
+    // Create new list that will hold buttons with options
+    var newButtonListOptUl = document.createElement("ul");
+
+    // Add id attribute to ul that will hold buttons
+    newButtonListOptUl.setAttribute("id", "buttonListContainer");
+
+    // Generate lis in ul element and add buttons to them
+    for (i = 1; i < 5; i ++){
+        var liName = document.createElement("li");
+        liName.style.listStyle = "none";
+        newButtonListOptUl.appendChild(liName);
+
+
+        var buttonLi = document.createElement("button");
+        liName.appendChild(buttonLi);
+    }
+
+    // Add list to HTML
+    questionEL.appendChild(newButtonListOptUl);
+
+    
+
+    
+
+
+    
+
+
+    // Create new button with options for question
+    var newOptionButton = document.createElement("button");
+
+
+
+
+}
+
+// Create HTML skeleton using Bootstrap's styling
+
+function createHTMLSkeleton(){
+    // Create new section div 
+    var newSectionEL = document.createElement("section");
+
+    // Target main div
+    var mainEl = document.getElementById("main");
+
+    // Add new section div to main div
+    mainEl.appendChild(newSectionEL);
+
+    // Create new row div
+    var newRowEl = document.createElement("div");
+
+    // Add classes to row div
+    newRowEl.setAttribute("class", "row mt-3");
+
+    // Add new row div to section div
+    newSectionEL.appendChild(newRowEl);
+
+    //Create new column div 
+    var newColEl = document.createElement("div");
+
+    // Add classes to column div & id
+    newColEl.setAttribute("class", "col-12 text-center");
+    newColEl.setAttribute("id", "newColumnDivForQuestion");
+
+    // Add new column div to row div
+    newRowEl.appendChild(newColEl);
 }
