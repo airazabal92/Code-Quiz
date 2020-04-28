@@ -12,15 +12,26 @@ var button = document.getElementById("startQuizButton");
 
 // Array of objects with the questions, options, and correct answer
 var questions = [
-    { questText: "Commonly used data types DO NOT include :", opt1: "strings", opt2: "booleans", opt3: "alerts", opt4: "numbers", correct: "alerts" },
-    { questText: "The condition in an if / else statement is encolsed within _______.", opt1: "quotes", opt2: "curly brackets", opt3: "parentheses", opt4: "square brackets", correct: "parentheses" },
-    { questText: "Arrays in JavaScript can be used to store ______.", opt1: "numbers and strings", opt2: "other arrays", opt3: "booleans", opt4: "all of the above", correct: "all of the above" },
-    { questText: "String values must be enclosed within ______ when being assigned to variables.", opt1: "commas", opt2: "curly brackets", opt3: "quotes", opt4: "parentheses", correct: "commas" },
-    { questText: "A very useful tool used during development and debugging for printing content to the debugger is:", opt1: "JavaScript", opt2: "terminal/bash", opt3: "for loops", opt4: "console.log", correct: "console.log" }
+    { questText: "Commonly used data types DO NOT include :", opt1: "strings", opt2: "booleans", opt3: "alerts", opt4: "numbers", correct: "button3" },
+    { questText: "The condition in an if / else statement is enclosed within _______.", opt1: "quotes", opt2: "curly brackets", opt3: "parentheses", opt4: "square brackets", correct: "button3" },
+    { questText: "Arrays in JavaScript can be used to store ______.", opt1: "numbers and strings", opt2: "other arrays", opt3: "booleans", opt4: "all of the above", correct: "button4" },
+    { questText: "String values must be enclosed within ______ when being assigned to variables.", opt1: "commas", opt2: "curly brackets", opt3: "quotes", opt4: "parentheses", correct: "button1" },
+    { questText: "A very useful tool used during development and debugging for printing content to the debugger is:", opt1: "JavaScript", opt2: "terminal/bash", opt3: "for loops", opt4: "console.log", correct: "button4" }
 ];
 
 // Seconds left in quiz
 var secondsLeft = 75;
+
+// Stores the id of the button was clicked 
+var buttonClicked = "";
+
+// Stores if answer was right/wrong
+var checkAnswerText = "";
+
+var answer = false;
+
+
+ 
 
 /* Logic/Functions  
 -------------------------------------------------------------------- */
@@ -37,9 +48,7 @@ button.addEventListener("click", function(){
     // Remove first page content once button is clicked
     startContent.remove();
 
-    // Display questions on quiz
-    displayQuestions();
-    
+        displayQuestions(0);
 
 });
 
@@ -53,17 +62,20 @@ function startCountdown(){
         if (secondsLeft === -1){
         clearInterval(countdownTimer);
         }
+
+        if(checkAnswerText === "Wrong"){
+            checkAnswerText = "";
+            secondsLeft = secondsLeft - 10;
+        }
     }, 1000);
 }
 
+
 // Display questions and keep track of which are correct/wrong 
 
-function displayQuestions(){
+function displayQuestions(questionNum){
 
     createHTMLSkeleton();
-
-    // Boolean to keep track of whether or not question has been answered
-    var questionAnswered = false;
 
     // Target div that will contain question
     var questionEL = document.getElementById("newColumnDivForQuestion");
@@ -75,7 +87,7 @@ function displayQuestions(){
     newQuizQuestion.style.fontSize = "25px"; 
 
     // Add question to element
-    newQuizQuestion.textContent = questions[0].questText;
+    newQuizQuestion.textContent = questions[questionNum].questText;
 
     // Add new paragraph to HTML
     questionEL.appendChild(newQuizQuestion);
@@ -87,46 +99,81 @@ function displayQuestions(){
     newButtonListOptUl.setAttribute("id", "buttonListContainer");
 
     // Generate lis in ul element and add buttons to them
-    for (i = 1; i < 5; i ++){
-        var liName = document.createElement("li");
-        liName.style.listStyle = "none";
-        newButtonListOptUl.appendChild(liName);
+    for (var i = 1; i < 5; i ++){
+        var newliEl = document.createElement("li");
+        newliEl.style.listStyle = "none";
+        newButtonListOptUl.appendChild(newliEl);
 
 
         var buttonLi = document.createElement("button");
-        liName.appendChild(buttonLi);
+        buttonLi.setAttribute("id" , "button" + [i]);
+        newliEl.appendChild(buttonLi);
     }
 
     // Add list to HTML
     questionEL.appendChild(newButtonListOptUl);
 
-    
+    // Add text to buttons
+    var button1 = document.getElementById("button1");
+    button1.textContent = questions[questionNum].opt1;
 
-    
+    var button2 = document.getElementById("button2");
+    button2.textContent = questions[questionNum].opt2;
 
+    var button3 = document.getElementById("button3");
+    button3.textContent = questions[questionNum].opt3;
 
-    
+    var button4 = document.getElementById("button4");
+    button4.textContent = questions[questionNum].opt4;
 
+    // Create event listeners for all buttons 
 
-    // Create new button with options for question
-    var newOptionButton = document.createElement("button");
+    button1.addEventListener("click", checkAnswer);
+    button2.addEventListener("click", checkAnswer);
+    button3.addEventListener("click", checkAnswer);
+    button4.addEventListener("click", checkAnswer);
 
+    // Check answer against correct answer 
 
+    function checkAnswer(){
+        buttonClicked = this.id;
+        console.log(this.id);
 
+        var sectionToClear = document.getElementById("newSectionForQuestions");
+
+        if (buttonClicked == questions[questionNum].correct){
+            console.log("RIGHT");
+            checkAnswerText = "Correct!";
+            sectionToClear.remove();
+
+        }
+        // If answer is wrong, set checkAnswer to wrong and trigger -10 seconds
+        else{
+            console.log("WRONG");
+            checkAnswerText = "Wrong";
+            sectionToClear.remove();
+        }
+        
+    }
+    console.log(questionNum);
 
 }
 
 // Create HTML skeleton using Bootstrap's styling
 
 function createHTMLSkeleton(){
-    // Create new section div 
-    var newSectionEL = document.createElement("section");
+
+     // Section div that will host questions
+    var newSectionEl = document.createElement("section");
+
+    // Add id to new section
+    newSectionEl.setAttribute("id", "newSectionForQuestions");
 
     // Target main div
     var mainEl = document.getElementById("main");
 
     // Add new section div to main div
-    mainEl.appendChild(newSectionEL);
+    mainEl.appendChild(newSectionEl);
 
     // Create new row div
     var newRowEl = document.createElement("div");
@@ -135,7 +182,7 @@ function createHTMLSkeleton(){
     newRowEl.setAttribute("class", "row mt-3");
 
     // Add new row div to section div
-    newSectionEL.appendChild(newRowEl);
+    newSectionEl.appendChild(newRowEl);
 
     //Create new column div 
     var newColEl = document.createElement("div");
