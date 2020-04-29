@@ -6,7 +6,7 @@ goBackToIndex.addEventListener("click", function(event) {
     window.location.replace("index.html");
 });
 
-// Add event listener to the Clear highscores button to clear all lis & clear local storage
+// Add event listener to the Clear Highscores button to clear all lis & clear local storage
 var clearScores = document.querySelector("#clearHighScores");
 
 clearScores.addEventListener("click", function(event) {
@@ -20,9 +20,6 @@ clearScores.addEventListener("click", function(event) {
 
   window.localStorage.clear();
 });
-
-
-
 
 // Get back the array of objects with the initials and scores stored so far
 var finalInput = JSON.parse(window.localStorage.getItem("highscores"));

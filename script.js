@@ -1,12 +1,6 @@
 /* Global variable declarations 
 -------------------------------------------------------------------- */
 
-// Element that contains the timer number
-var timerSpan = document.getElementById("quizTimer");
-
-// Element that has the quiz name, instructions, and button
-var startContent = document.getElementById("starterContent");
-
 // Button that will start the quiz once clicked
 var button = document.getElementById("startQuizButton");
 
@@ -22,14 +16,11 @@ var questions = [
 // Seconds left in quiz
 var secondsLeft = 75;
 
-// Stores the id of the button was clicked 
-var buttonClicked = "";
-
 // Stores if answer was right/wrong
 var checkAnswerText = "";
 
 // Element that will host new questions
-var newQuizQuestion="";
+var newQuizQuestion = "";
 
 // Question number 
 var questionNum = 0;
@@ -39,11 +30,6 @@ var finalScore;
 
 // Reference to check when user inputs initials 
 var submitHighScore = document.querySelector("#submit");
-
-// Reference to local storage
-var localScoresStorage = window.localStorage;
-
-var numLocalStorage = 0;
 
 // Correct answer tracker
 var correct = 0; 
@@ -58,6 +44,9 @@ button.addEventListener("click", function(){
     // Start the countdown on click
     startCountdown();
 
+    // Element that has the quiz name, instructions, and button
+    var startContent = document.getElementById("starterContent");
+
     // Remove first page content once button is clicked
     startContent.remove();
 
@@ -69,10 +58,15 @@ button.addEventListener("click", function(){
 function startCountdown(){
 
     var countdownTimer = setInterval(function() {
+
+        // Element that contains the timer number
+        var timerSpan = document.getElementById("quizTimer");
+
         timerSpan.textContent = secondsLeft; // Display seconds left
         secondsLeft --; // Subtract 1 second from timer per second
 
-        // If seconds left = -1 (not 0 to compensate for lag) stop countdown and execution of questions and make sure to remove question section so it's not displayed on quiz recap page
+        // If seconds left = -1 (not 0 to compensate for lag) stop countdown and execution of questions 
+        //and make sure to remove question section so it's not displayed on quiz recap page
         if (secondsLeft === -1){
             clearInterval(countdownTimer);
             
@@ -80,6 +74,7 @@ function startCountdown(){
             var questionSection = document.getElementById("newSectionForQuestions");
             questionSection.remove();
 
+            // Send to page with form for initials and score submission
             allDone();
         }
 
@@ -87,6 +82,8 @@ function startCountdown(){
 
         if (questionNum > 4){
             clearInterval(countdownTimer);
+
+            // Send to page with form for initials and score submission
             allDone();
         }
 
@@ -122,15 +119,13 @@ function displayQuestions(){
 
     // Add if answer was right or wrong to bottom of question
     var answerText = document.createElement("p");
-
-   if(checkAnswerText === "Wrong"){
-    answerText.innerHTML = "<br><hr><span style='color:red; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
-}
-else{
-    answerText.innerHTML = "<br><hr><span style='color:green; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
-}
-
-
+    
+    if(checkAnswerText === "Wrong"){
+        answerText.innerHTML = "<br><hr><span style='color:red; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+    }
+    else {
+        answerText.innerHTML = "<br><hr><span style='color:green; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+    }
 
     var answerDiv = document.getElementById("newColumnDivForQuestion");
     answerDiv.appendChild(answerText);
@@ -145,15 +140,13 @@ else{
     function checkAnswer(){
 
         //Get id of button that was clicked
-        buttonClicked = this.id;
-        console.log(this.id);
+        var buttonClicked = this.id;
 
         // Target section that contains question
         var sectionToClear = document.getElementById("newSectionForQuestions");
 
         // If answer is correct, set checkAnswerText to correct, then remove entire section
         if (buttonClicked == questions[questionNum].correct){
-            console.log("RIGHT");
             checkAnswerText = "Correct!";
             correct++;
             sectionToClear.remove();
@@ -163,16 +156,14 @@ else{
 
             // If question is greater than amount of questions, stop recursion, else continue
             if (questionNum > 4){
-                console.log("DONE");
                 return;
             }
-            else{
+            else {
                 displayQuestions(questionNum);
             }
         }
         // If answer is wrong, set checkAnswer to wrong and remove entire section
-        else{
-            console.log("WRONG");
+        else {
             checkAnswerText = "Wrong";
             sectionToClear.remove();
 
@@ -181,16 +172,13 @@ else{
 
             // If question is greater than amount of questions, stop recursion, else continue
             if (questionNum > 4){
-                console.log("DONE");
-                console.log("YO WHY" + questionNum);
                 return;
             }
-            else{
+            else {
                 displayQuestions(questionNum);
             }
         }
     }
-    console.log(questionNum);
 }
 
 // Create HTML skeleton using Bootstrap's styling
@@ -271,10 +259,10 @@ function createHTMLSkeleton(){
 // Function to make form visible and add score to page at end of quiz
 function allDone(){
     
-    
- 
+    // Target element where score will be displayed
     var formEl = document.getElementById("formElement");
-
+    
+    // Calculate final score
     finalScore = ((correct/5) * 100) + "%";
     
     // Add score to page
@@ -303,21 +291,21 @@ function allDone(){
 
 submitHighScore.addEventListener("click", function(event) {
     
+    // Prevent default submit execution
     event.preventDefault();
 
-    //numLocalStorage++;
-
+    // Get user initials value
     var userInitialsForm = document.getElementById("formForHighscores").elements;
     var userInitialsValueReference = userInitialsForm["initials"];
-
     var initialsValue = userInitialsValueReference.value.trim();
 
-    // Checks to make sure initials are entered, and prompts user to enter valid input if they are not
+    // Check to make sure initials are entered - if they are not prompts user to enter valid input 
 
     if (initialsValue == ""){
         alert ("You did not input your initials, please try again.")
     }
     else{
+        // If input is valid, add object to existing array
         var finalInput = JSON.parse(window.localStorage.getItem("highscores")) || [];
         
         var newScore = {
@@ -327,8 +315,10 @@ submitHighScore.addEventListener("click", function(event) {
         
         finalInput.push(newScore);
         
+        // Add latest highscore to localStorage
         window.localStorage.setItem("highscores", JSON.stringify(finalInput));
-        
+
+        // Redirect user to highscores page
         window.location.replace("highscores.html");
     }
 });    
