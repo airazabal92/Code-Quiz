@@ -280,27 +280,40 @@ function allDone(){
     answerDiv.appendChild(answerText);
 }
 
+// Event listener for submiting initials and score
+
 submitHighScore.addEventListener("click", function(event) {
     
     event.preventDefault();
 
-    numLocalStorage++;
+    //numLocalStorage++;
 
     var userInitialsForm = document.getElementById("formForHighscores").elements;
-    var userInitialsValue = userInitialsForm["initials"];
+    var userInitialsValueReference = userInitialsForm["initials"];
 
-    console.log("VAL " + userInitialsValue.value);
+    var initialsValue = userInitialsValueReference.value.trim();
 
-    var finalInput = JSON.parse(window.localStorage.getItem("highscores")) || [];
+    // Checks to make sure initials are entered, and prompts user to enter valid input if they are not
 
-    var newScore = {
-        initials: userInitialsValue.value.trim(),
-        score: finalScore
-    };
+    if (initialsValue == ""){
+        alert ("You did not input your initials, please try again.")
+    }
+    else{
+        var finalInput = JSON.parse(window.localStorage.getItem("highscores")) || [];
+        
+        var newScore = {
+            initials: initialsValue,
+            score: finalScore
+        };
+        
+        finalInput.push(newScore);
+        
+        window.localStorage.setItem("highscores", JSON.stringify(finalInput));
+        
+        window.location.replace("highscores.html");
+    }
+});    
 
-    finalInput.push(newScore);
-
-    window.localStorage.setItem("highscores", JSON.stringify(finalInput));
     
-    window.location.replace("highscores.html");
-});
+
+
