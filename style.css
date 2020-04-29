@@ -1,4 +1,6 @@
-/* Styling for form that is initially hidden on index page */
+/* Styling for form that is initially hidden on index page 
+-------------------------------------------------- */
+
 #hiddenForm{
     visibility: hidden;
 }
@@ -6,4 +8,35 @@
 #formForHighscores{
     margin: auto;
     width: 305px;
+}
+
+/* Styling for View Highscores hyperlink and Timer text on top of page */
+
+#highscoresText{
+    text-align: left;
+}
+
+#timeText{
+    text-align: right;
+}
+
+/* Styles on screens less than 540px -------------------------------------------------- */
+
+@media screen and (max-width: 576px) {
+
+    #highscoresText, #timeText{
+        text-align: left;
+    }
+
+    #highscoresText{
+        margin-top: 1rem;
+    }
+
+    #highscoresText{
+        margin-left: 1rem;
+    }
+
+    #timeText{
+        margin-left: 2rem;
+    }
 }

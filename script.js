@@ -122,7 +122,16 @@ function displayQuestions(){
 
     // Add if answer was right or wrong to bottom of question
     var answerText = document.createElement("p");
-    answerText.innerHTML = "<br><hr>" + checkAnswerText;
+
+   if(checkAnswerText === "Wrong"){
+    answerText.innerHTML = "<br><hr><span style='color:red; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+}
+else{
+    answerText.innerHTML = "<br><hr><span style='color:green; font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+}
+
+
+
     var answerDiv = document.getElementById("newColumnDivForQuestion");
     answerDiv.appendChild(answerText);
 
@@ -225,8 +234,11 @@ function createHTMLSkeleton(){
     // Create new paragraph with quiz question
     newQuizQuestion = document.createElement("p");
 
-    // Add attributes to paragraph with question
-    newQuizQuestion.style.fontSize = "25px"; 
+    // Add styles to paragraph with question
+    newQuizQuestion.style.fontSize = "25px";
+    newQuizQuestion.style.maxWidth = "70%"; 
+    newQuizQuestion.style.margin = "auto";
+    newQuizQuestion.style.paddingBottom = "25px";
 
     // Add new paragraph to HTML
     questionEL.appendChild(newQuizQuestion);
@@ -266,7 +278,7 @@ function allDone(){
     finalScore = ((correct/5) * 100) + "%";
     
     // Add score to page
-    formEl.innerHTML = "<h2>All done!</h2><br> Your final score is " + finalScore + "<br>";
+    formEl.innerHTML = "<h1>All done!</h1><br> <span style='font-size: 20px'>Your final score is " + "<span style='color:#19A2B8'>" + finalScore + "</span>" + "<br></span>";
 
     // Make form visible
     var form = document.getElementById("hiddenForm");
@@ -275,7 +287,14 @@ function allDone(){
 
     // Add if last answer was right or wrong to bottom of page
     var answerText = document.createElement("p");
-    answerText.innerHTML = "<br><hr>" + checkAnswerText;
+
+    if(checkAnswerText === "Wrong"){
+        answerText.innerHTML = "<br><hr><span style='color:red;font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+    }
+    else{
+        answerText.innerHTML = "<br><hr><span style='color:green;font-size: 18px; font-weight:bold'>" + checkAnswerText + "</span>";
+    }
+
     var answerDiv = document.getElementById("lastQuestionEl");
     answerDiv.appendChild(answerText);
 }
