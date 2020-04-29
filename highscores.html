@@ -14,18 +14,26 @@
 
         <div class="container.fluid">
 
-            <!-- Scores and Time text -->
+            <!-- Highscores pulled from local storage -->
             <section>
                 <div class="row mt-1">
+                    <div class="col-sm-12 text-center" style="margin-top: 5rem">
+                        <h1>Highscores</h1>
+                    </div>
+                </div>
+
+                <div class="row mt-1">
                     <div class="col-sm-12">
-                        <p class= "p-3 ml-3">Highscores</p>
 
-                        <ul id="UlForHighScores"><li>test</li></ul>
+                        <div class="card" style="width: 18rem; margin:auto">
+                            <ul id="UlForHighScores" class="list-group list-group-flush"></ul>
+                        </div>
 
-                        <button type="button" id="goBack" class="btn btn-info">Go Back</button>
+                        <div style="width: 18rem; margin:auto; text-align: center; margin-top: 2rem">
+                            <button type="button" id="goBack" class="btn btn-info">Go Back</button>
 
-                        <button type="button" id ="clearHighScores" class="btn btn-info">Clear Highscores</button>
-
+                            <button type="button" id ="clearHighScores" class="btn btn-info">Clear Highscores</button>
+                        </div>
                     </div>
                 </div>
             </section>
