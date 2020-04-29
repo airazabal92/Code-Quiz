@@ -72,12 +72,24 @@ function startCountdown(){
         timerSpan.textContent = secondsLeft; // Display seconds left
         secondsLeft --; // Subtract 1 second from timer per second
 
-        // If seconds left = -1 or there are no more questions, stop countdown and execution of questions
-        if (secondsLeft === -1 || questionNum > 4){
+        // If seconds left = -1 (not 0 to compensate for lag) stop countdown and execution of questions and make sure to remove question section so it's not displayed on quiz recap page
+        if (secondsLeft === -1){
             clearInterval(countdownTimer);
+            
+            // Make sure to remove question content if timer reaches 0 before all questions are answered 
+            var questionSection = document.getElementById("newSectionForQuestions");
+            questionSection.remove();
 
             allDone();
         }
+
+        // If there are no more questions, stop countdown and execution of questions
+
+        if (questionNum > 4){
+            clearInterval(countdownTimer);
+            allDone();
+        }
+
         //If question is answered incorrectly, take away 10 seconds from countdown
         if(checkAnswerText === "Wrong"){
             checkAnswerText = "";
@@ -246,18 +258,20 @@ function createHTMLSkeleton(){
 
 // Function to make form visible and add score to page at end of quiz
 function allDone(){
+    
+    
  
-     var formEl = document.getElementById("formElement");
+    var formEl = document.getElementById("formElement");
 
-     finalScore = ((correct/5) * 100) + "%";
-     
-     // Add score to page
-     formEl.innerHTML = "<h2>All done!</h2><br> Your final score is " + finalScore + "<br>";
+    finalScore = ((correct/5) * 100) + "%";
+    
+    // Add score to page
+    formEl.innerHTML = "<h2>All done!</h2><br> Your final score is " + finalScore + "<br>";
 
-     // Make form visible
-     var form = document.getElementById("hiddenForm");
-     console.log("Form" + form);
-     form.style.visibility = "visible";
+    // Make form visible
+    var form = document.getElementById("hiddenForm");
+    console.log("Form" + form);
+    form.style.visibility = "visible";
 
     // Add if last answer was right or wrong to bottom of page
     var answerText = document.createElement("p");
