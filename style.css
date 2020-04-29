@@ -1,0 +1,9 @@
+/* Styling for form that is initially hidden on index page */
+#hiddenForm{
+    visibility: hidden;
+}
+
+#formForHighscores{
+    margin: auto;
+    width: 305px;
+}
