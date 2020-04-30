@@ -5,5 +5,5 @@ The application has a countdown and gives the user 75 seconds to complete the qu
 
 Local storage is used to store the initials and score of the user so that they can retake the quiz and compare their progress, or have others take the quiz and be able to compare results. 
 
-The application can be viewed on GitHub Pages below: 
+The application can be viewed on GitHub Pages: 
 https://airazabal92.github.io/Code-Quiz/ 
